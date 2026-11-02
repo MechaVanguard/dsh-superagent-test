@@ -1,0 +1,24 @@
+name: request
+
+on:
+  workflow_dispatch:
+    inputs:
+      title:
+        description: issue title
+        required: true
+      body:
+        description: issue body
+        required: true
+
+jobs:
+  ask:
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+    steps:
+      - name: open the request issue as github-actions[bot]
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TITLE: ${{ inputs.title }}
+          BODY: ${{ inputs.body }}
+        run: gh issue create --repo "${{ github.repository }}" --title "$TITLE" --body "$BODY"
